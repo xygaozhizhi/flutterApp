@@ -1,31 +1,27 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myflutterapp/res/res_string.dart';
-import 'package:myflutterapp/widgets/dialog_utils.dart';
-import 'package:myflutterapp/widgets/empty.dart';
-import 'package:myflutterapp/widgets/my_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../../controller/home_controller.dart';
-import '../../widgets/load_state.dart';
-import '../../widgets/swiper.dart';
+import '../../../res/res_string.dart';
+import '../../../widgets/dialog_utils.dart';
+import '../../../widgets/empty.dart';
+import '../../../widgets/load_state.dart';
+import '../../../widgets/my_widget.dart';
+import '../../controller/square_controller.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class SquarePage extends StatefulWidget {
+  const SquarePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SquarePage> createState() => _SquareState();
 }
 
-class _HomePageState extends State<HomePage> {
-  late HomeController controller;
-  late SwiperController swiperController;
+class _SquareState extends State<SquarePage> {
+  late SquareController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = Get.find<HomeController>();
-    swiperController = SwiperController();
+    controller = Get.find<SquareController>();
   }
 
   @override
@@ -35,7 +31,7 @@ class _HomePageState extends State<HomePage> {
         case LoadState.loading:
           return const LoadingDialog();
         case LoadState.success:
-          return _homeWidget();
+          return _squareWidget();
         case LoadState.failure:
           return const EmptyPage(
             tipMsg: "加载失败",
@@ -52,81 +48,16 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Widget _homeWidget() {
+  Widget _squareWidget() {
     return SmartRefresher(
       controller: RefreshController(),
       enablePullUp: true,
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 200.0,
-              child: Obx(
-                () => _itemBanner(),
-              ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return _itemArticle(index);
-              },
-              childCount: controller.articles.length,
-            ),
-          ),
-        ],
+      child: ListView.builder(
+        itemCount: controller.articles.length,
+        itemBuilder: (context, index) {
+          return _itemArticle(index);
+        },
       ),
-    );
-  }
-
-  Widget _itemBanner() {
-    return Stack(
-      children: [
-        Positioned(
-          child: Swiper(
-            controller: swiperController,
-            autoStart: true,
-            indicator: CircleSwiperIndicator(
-              itemColor: Colors.black54,
-              itemActiveColor: Colors.blueAccent,
-            ),
-            indicatorAlignment: AlignmentDirectional.bottomEnd,
-            children: controller.bannerItems
-                .map((e) => CachedNetworkImage(
-                      imageUrl: e.imagePath,
-                      fit: BoxFit.fill,
-                    ))
-                .toList(),
-            onChanged: (index) {
-              controller.bannerTitle.value =
-                  controller.bannerItems[index].title;
-            },
-          ),
-        ),
-        Positioned(
-          width: MediaQuery.of(context).size.width,
-          height: 32,
-          bottom: 0,
-          child: DecoratedBox(
-            decoration: const BoxDecoration(
-              color: Colors.black26,
-            ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 12,
-                ),
-                child: Text(
-                  controller.bannerTitle.value,
-                  style: const TextStyle(color: Colors.white70),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -141,19 +72,16 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   Visibility(
-                    visible: controller.articles[index].isTop ||
-                        controller.articles[index].fresh,
+                    visible: controller.articles[index].fresh,
                     child: Row(
                       children: [
                         HollowFrameText(
                           radius: 4,
                           slideColor: Colors.red,
                           padding: const EdgeInsets.all(4),
-                          text: controller.articles[index].isTop
-                              ? top.tr
-                              : controller.articles[index].fresh
-                                  ? newArticles.tr
-                                  : "",
+                          text: controller.articles[index].fresh
+                              ? newArticles.tr
+                              : "",
                           textColor: Colors.red,
                           textSize: 8,
                         ),

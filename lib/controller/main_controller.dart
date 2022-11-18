@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../common/constant.dart';
-import '../theme/app_theme.dart';
+import '../res/app_theme.dart';
 import '../utils/sp_utils.dart';
 import 'app_controller.dart';
 

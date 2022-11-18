@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myflutterapp/common/constant.dart';
-import 'package:myflutterapp/common/icon_fonts.dart';
+import 'package:myflutterapp/res/icon_fonts.dart';
 import 'package:myflutterapp/config/route_configs.dart';
 import 'package:myflutterapp/controller/app_controller.dart';
 import 'package:myflutterapp/controller/main_controller.dart';
 import 'package:myflutterapp/routes/home/home_page.dart';
-import 'package:myflutterapp/routes/project_page.dart';
-import 'package:myflutterapp/routes/public_page.dart';
-import 'package:myflutterapp/routes/square_page.dart';
-import 'package:myflutterapp/routes/system_page.dart';
-import 'package:myflutterapp/theme/app_theme.dart';
-import '../l10n/app_language.dart';
+import 'package:myflutterapp/routes/project/project_page.dart';
+import 'package:myflutterapp/routes/public/public_page.dart';
+import 'package:myflutterapp/routes/square/square_page.dart';
+import 'package:myflutterapp/routes/system/system_page.dart';
+import 'package:myflutterapp/res/app_theme.dart';
+import '../res/res_string.dart';
 
 class MainRoute extends StatefulWidget {
   final _tabs = [
@@ -37,10 +37,10 @@ class MainRoute extends StatefulWidget {
     ),
   ];
   final List<Widget> _pages = [
-    HomePage(),
+    const HomePage(),
     const SquarePage(),
     const PublicPage(),
-    const SystemPage(),
+    SystemPage(),
     const ProjectPage(),
   ];
 

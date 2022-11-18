@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:myflutterapp/http/base_data.dart';
-
 import 'error_handle.dart';
 
 /// 连接超时时间
@@ -36,7 +34,8 @@ void configDio({
 }
 
 typedef HttpSuccessCallback<T> = Function(String data);
-typedef HttpErrorCallback = Function(int code, String msg);
+typedef HttpErrorCallback = Function(dynamic obj);
+typedef HttpDoneCallback = Function();
 
 class DioUtil {
   factory DioUtil() => _singleton;
@@ -100,6 +99,7 @@ class DioUtil {
     String url, {
     HttpSuccessCallback<T>? onSuccess,
     HttpErrorCallback? onError,
+    HttpDoneCallback? onDone,
     Object? params,
     Map<String, dynamic>? queryParameters,
     CancelToken? cancelToken,
@@ -112,34 +112,20 @@ class DioUtil {
       queryParameters: queryParameters,
       options: options,
       cancelToken: cancelToken,
-    ).then(
-      (BaseData<T> result) {
-        if (result.code == ExceptionHandle.success) {
-          onSuccess?.call(jsonEncode(result.data));
-        } else {
-          _onError(result.code, result.message, onError);
-        }
-      },
-      onError: (dynamic e) {
-        final NetError error = ExceptionHandle.handleException(e);
-        _onError(error.code, error.msg, onError);
-      },
-    );
-  }
-
-  void _onError(int? code, String msg, HttpErrorCallback? onError) {
-    if (code == null) {
-      code = ExceptionHandle.unknownError;
-      msg = '未知异常';
-    }
-    onError?.call(code, msg);
+    ).then((BaseData<T> result) {
+      if (result.code == ExceptionHandle.success) {
+        onSuccess?.call(jsonEncode(result.data));
+        return Future.value(jsonEncode(result.data));
+      } else {
+        throw NetException(result.code, result.message);
+      }
+    }).catchError((e) =>
+        throw (e is NetException) ? e : ExceptionHandle.handleException(e));
   }
 }
 
 enum Method { get, post, put, patch, delete, head }
 
-/// 使用拓展枚举替代 switch判断取值
-/// https://zhuanlan.zhihu.com/p/98545689
 extension MethodExtension on Method {
   String get value => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD'][index];
 }

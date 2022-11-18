@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:myflutterapp/common/constant.dart';
 import 'package:myflutterapp/controller/app_controller.dart';
 import 'package:myflutterapp/controller/system_setting_controller.dart';
-import 'package:myflutterapp/l10n/app_language.dart';
-import 'package:myflutterapp/theme/app_theme.dart';
+import 'package:myflutterapp/res/res_string.dart';
+import 'package:myflutterapp/res/app_theme.dart';
 import 'package:myflutterapp/utils/sp_utils.dart';
 
 class SettingRoute extends StatefulWidget {

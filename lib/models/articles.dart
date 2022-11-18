@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-HomeArticles homeArticlesFromJson(String str) =>
-    HomeArticles.fromJson(json.decode(str));
+MainArticles mainArticlesFromJson(String str) =>
+    MainArticles.fromJson(json.decode(str));
 
-String homeArticlesToJson(HomeArticles data) => json.encode(data.toJson());
+String mainArticlesToJson(MainArticles data) => json.encode(data.toJson());
 
-class HomeArticles {
-  HomeArticles({
+class MainArticles {
+  MainArticles({
     this.curPage,
-    this.articles,
+    this.articles = const <Articles>[],
     this.offset,
     this.over,
     this.pageCount,
@@ -17,14 +17,14 @@ class HomeArticles {
   });
 
   int? curPage;
-  List<Articles>? articles;
+  List<Articles> articles;
   int? offset;
   bool? over;
   int? pageCount;
   int? size;
   int? total;
 
-  factory HomeArticles.fromJson(Map<String, dynamic> json) => HomeArticles(
+  factory MainArticles.fromJson(Map<String, dynamic> json) => MainArticles(
         curPage: json["curPage"],
         articles:
             List<Articles>.from(json["datas"].map((x) => Articles.fromJson(x))),
@@ -38,9 +38,7 @@ class HomeArticles {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['curPage'] = curPage;
-    if (articles != null) {
-      data['datas'] = articles!.map((v) => v.toJson()).toList();
-    }
+    data['datas'] = articles.map((v) => v.toJson()).toList();
     data['offset'] = offset;
     data['over'] = over;
     data['pageCount'] = pageCount;
@@ -61,7 +59,7 @@ class Articles {
     this.adminAdd,
     this.apkLink,
     this.audit,
-    this.author,
+    this.author = "",
     this.canEdit,
     this.chapterId,
     this.chapterName,
@@ -70,7 +68,7 @@ class Articles {
     this.desc,
     this.descMd,
     this.envelopePic,
-    this.fresh,
+    this.fresh = false,
     this.host,
     this.id,
     this.isAdminAdd,
@@ -84,10 +82,10 @@ class Articles {
     this.realSuperChapterId,
     this.selfVisible,
     this.shareDate,
-    this.shareUser,
+    this.shareUser = "",
     this.superChapterId,
     this.superChapterName,
-    this.tags,
+    this.tags = const <Tag>[],
     this.title,
     this.type,
     this.userId,
@@ -98,7 +96,7 @@ class Articles {
   bool? adminAdd;
   String? apkLink;
   int? audit;
-  String? author;
+  String author;
   bool? canEdit;
   int? chapterId;
   String? chapterName;
@@ -107,7 +105,7 @@ class Articles {
   String? desc;
   String? descMd;
   String? envelopePic;
-  bool? fresh;
+  bool fresh;
   String? host;
   int? id;
   bool? isAdminAdd;
@@ -121,10 +119,10 @@ class Articles {
   int? realSuperChapterId;
   int? selfVisible;
   int? shareDate;
-  String? shareUser;
+  String shareUser;
   int? superChapterId;
   String? superChapterName;
-  List<Tag>? tags;
+  List<Tag> tags;
   String? title;
   int? type;
   int? userId;
@@ -201,9 +199,7 @@ class Articles {
     data['shareUser'] = shareUser;
     data['superChapterId'] = superChapterId;
     data['superChapterName'] = superChapterName;
-    if (tags != null) {
-      data['tags'] = tags!.map((v) => v.toJson()).toList();
-    }
+    data['tags'] = tags.map((v) => v.toJson()).toList();
     data['title'] = title;
     data['type'] = type;
     data['userId'] = userId;
@@ -215,11 +211,11 @@ class Articles {
 
 class Tag {
   Tag({
-    this.name,
+    this.name = "",
     this.url,
   });
 
-  String? name;
+  String name;
   String? url;
 
   factory Tag.fromJson(Map<String, dynamic> json) => Tag(

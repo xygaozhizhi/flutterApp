@@ -68,6 +68,8 @@ flutter:
   assets:
     - images/ic_launcher.png
     - images/ic_default_avatar.png
+    - images/img_no_data.png
+    - images/img_no_network.png
   fonts:
     - family: IconFont
       fonts:

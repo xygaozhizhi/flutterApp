@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 class ExceptionHandle {
   static const int success = 0;
@@ -20,20 +19,19 @@ class ExceptionHandle {
   static const int cancelError = 1007;
   static const int unknownError = 9999;
 
-  static final Map<int, NetError> _errorMap = <int, NetError>{
-    netError: NetError(netError, '网络异常，请检查你的网络！'),
-    parseError: NetError(parseError, '数据解析错误！'),
-    socketError: NetError(socketError, '网络异常，请检查你的网络！'),
-    httpError: NetError(httpError, '服务器异常，请稍后重试！'),
-    connectTimeoutError: NetError(connectTimeoutError, '连接超时！'),
-    sendTimeoutError: NetError(sendTimeoutError, '请求超时！'),
-    receiveTimeoutError: NetError(receiveTimeoutError, '响应超时！'),
-    cancelError: NetError(cancelError, '取消请求'),
-    unknownError: NetError(unknownError, '未知异常'),
+  static final Map<int, NetException> _errorMap = <int, NetException>{
+    netError: NetException(netError, '网络异常，请检查你的网络！'),
+    parseError: NetException(parseError, '数据解析错误！'),
+    socketError: NetException(socketError, '网络异常，请检查你的网络！'),
+    httpError: NetException(httpError, '服务器异常，请稍后重试！'),
+    connectTimeoutError: NetException(connectTimeoutError, '连接超时！'),
+    sendTimeoutError: NetException(sendTimeoutError, '请求超时！'),
+    receiveTimeoutError: NetException(receiveTimeoutError, '响应超时！'),
+    cancelError: NetException(cancelError, '取消请求'),
+    unknownError: NetException(unknownError, '未知异常'),
   };
 
-  static NetError handleException(dynamic error) {
-    debugPrint(error.toString());
+  static NetException handleException(dynamic error) {
     if (error is DioError) {
       if (error.type.errorCode == 0) {
         return _handleException(error.error);
@@ -45,7 +43,7 @@ class ExceptionHandle {
     }
   }
 
-  static NetError _handleException(dynamic error) {
+  static NetException _handleException(dynamic error) {
     int errorCode = unknownError;
     if (error is SocketException) {
       errorCode = socketError;
@@ -60,11 +58,16 @@ class ExceptionHandle {
   }
 }
 
-class NetError {
-  NetError(this.code, this.msg);
+class NetException implements Exception {
+  NetException(this.code, this.msg);
 
   int code;
   String msg;
+
+  @override
+  String toString() {
+    return 'NetException{code: $code, msg: $msg}';
+  }
 }
 
 extension DioErrorTypeExtension on DioErrorType {

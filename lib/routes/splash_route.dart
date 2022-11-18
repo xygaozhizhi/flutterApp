@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myflutterapp/common/constant.dart';
 import 'package:myflutterapp/config/route_configs.dart';
-import 'package:myflutterapp/theme/app_theme.dart';
+import 'package:myflutterapp/res/app_theme.dart';
 import '../controller/app_controller.dart';
 
 class SplashRoute extends StatefulWidget {

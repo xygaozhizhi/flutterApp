@@ -6,9 +6,9 @@ import 'package:myflutterapp/common/constant.dart';
 import 'package:myflutterapp/config/global.dart';
 import 'package:myflutterapp/config/route_configs.dart';
 import 'package:myflutterapp/controller/app_controller.dart';
-import 'package:myflutterapp/l10n/app_language.dart';
+import 'package:myflutterapp/res/res_string.dart';
 import 'dart:ui' as ui;
-import 'package:myflutterapp/theme/app_theme.dart';
+import 'package:myflutterapp/res/app_theme.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'http/dio_util.dart';
 
@@ -21,7 +21,6 @@ void main() async {
 
 void initDio() {
   final List<Interceptor> interceptors = <Interceptor>[];
-
   if (kDebugMode) {
     //interceptors.add(LogInterceptor());
   }

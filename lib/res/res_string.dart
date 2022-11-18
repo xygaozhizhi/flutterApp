@@ -35,6 +35,10 @@ const String currentVersion = "current_version";
 const String customize = "customize";
 const String cancel = "cancel";
 const String sure = "sure";
+const String navigation = "navigation";
+//
+const String top = "top";
+const String newArticles = "new";
 
 class Messages extends Translations {
   @override
@@ -72,6 +76,10 @@ class Messages extends Translations {
           customize: "自定义",
           cancel: "取消",
           sure: "确定",
+          navigation: "导航",
+          //
+          top: "置顶",
+          newArticles: "新",
         },
         us: {
           home: "Home",
@@ -109,6 +117,10 @@ class Messages extends Translations {
           customize: "Customize",
           cancel: "Cancel",
           sure: "Sure",
+          navigation: "Navigation",
+          //
+          top: "Top",
+          newArticles: "New",
         },
       };
 }

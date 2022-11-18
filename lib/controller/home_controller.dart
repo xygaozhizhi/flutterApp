@@ -2,24 +2,40 @@ import 'package:get/get.dart';
 import 'package:myflutterapp/common/constant.dart';
 import 'package:myflutterapp/http/dio_util.dart';
 import 'package:myflutterapp/models/banner.dart';
-
+import 'package:myflutterapp/widgets/load_state.dart';
 import '../models/articles.dart';
 
 class HomeController extends GetxController {
   List<BannerData> bannerItems = <BannerData>[].obs;
-  var homeArticles = HomeArticles().obs;
+  var homeArticles = MainArticles().obs;
   List<Articles> articles = <Articles>[].obs;
+  var loadState = LoadState.loading.obs;
 
   var bannerTitle = "".obs;
 
   @override
   void onInit() {
     super.onInit();
-    getTopArticles();
+    loadState.value = LoadState.loading;
+    getData(false);
   }
 
-  Future getTopArticles() async {
-    await DioUtil().requestNetwork(
+  void getData(bool isLoadMore) {
+    var futures = <Future>[];
+    if (!isLoadMore) {
+      futures.add(_getBanner());
+      futures.add(_getTopArticles());
+      futures.add(_getArticles());
+    } else {
+      futures.add(_getArticles());
+    }
+    Future.wait(futures)
+        .then((value) => loadState.value = LoadState.success)
+        .catchError((e) => loadState.value = LoadState.failure);
+  }
+
+  Future _getTopArticles() {
+    return DioUtil().requestNetwork(
       Method.get,
       Constant.topArticles,
       onSuccess: (data) {
@@ -27,26 +43,27 @@ class HomeController extends GetxController {
         for (var article in topArticles) {
           article.isTop = true;
         }
-        if (articles.isEmpty) {
-          articles.addAll(topArticles);
+        if (articles.isNotEmpty) {
+          articles.clear();
         }
-        print(articles.length);
+        articles.addAll(topArticles);
       },
     );
   }
 
-  Future getArticles() async {
-    await DioUtil().requestNetwork(
+  Future _getArticles() {
+    return DioUtil().requestNetwork(
       Method.get,
-      Constant.articles(1),
+      Constant.homeArticles(0),
       onSuccess: (data) {
-        homeArticles.value = homeArticlesFromJson(data);
+        homeArticles.value = mainArticlesFromJson(data);
+        articles.addAll(homeArticles.value.articles);
       },
     );
   }
 
-  Future getBanner() async {
-    await DioUtil().requestNetwork(
+  Future _getBanner() {
+    return DioUtil().requestNetwork(
       Method.get,
       Constant.banner,
       onSuccess: (data) {
