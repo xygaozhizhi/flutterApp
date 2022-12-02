@@ -29,13 +29,11 @@ class _SplashState extends State<SplashRoute>
         getThemeData(appController.theme.value).primaryColor as MaterialColor;
     animation = ColorTween(begin: color[100], end: color[700])
         .animate(animationController);
-    animation.addStatusListener(
-      (status) {
-        if (status == AnimationStatus.completed) {
-          Get.offNamed(RoutesConfig.main);
-        }
-      },
-    );
+    animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Get.offNamed(RoutesConfig.main);
+      }
+    });
     animationController.forward();
   }
 

@@ -1,18 +1,16 @@
 import 'package:get/get.dart';
 import '../common/constant.dart';
 import '../http/dio_util.dart';
-import '../models/articles.dart';
+import '../models/score_rankings.dart';
 import '../refresh/src/smart_refresher.dart';
 import '../widgets/load_state.dart';
 
-class SquareController extends GetxController {
+class ScoreRankingController extends GetxController {
   late RefreshController refreshController;
-
-  var squareArticles = MainArticles().obs;
-
-  List<Articles> articles = <Articles>[].obs;
+  var loadPage = 1;
+  List<Score> scores = <Score>[].obs;
+  var scoreRankings = ScoreRankings().obs;
   var loadState = LoadState.loading.obs;
-  var loadPage = 0;
 
   @override
   void onInit() {
@@ -22,21 +20,20 @@ class SquareController extends GetxController {
 
   void getData(LoadModel loadModel) {
     DioUtil()
-        .requestNetwork(Method.get, Constant.squareArticles(loadPage))
+        .requestNetwork(Method.get, Constant.scoreRanking(loadPage))
         .then((value) {
-      if (loadModel != LoadModel.loadMore && articles.isNotEmpty) {
-        articles.clear();
+      if (loadModel != LoadModel.loadMore && scores.isNotEmpty) {
+        scores.clear();
       }
-      squareArticles.value = mainArticlesFromJson(value);
-      articles.addAll(squareArticles.value.articles);
+      scoreRankings.value = scoreRankingsFromJson(value);
+      scores.addAll(scoreRankings.value.datas);
       if (loadModel == LoadModel.refresh) {
         refreshController.refreshCompleted(resetFooterState: true);
       } else if (loadModel == LoadModel.loading) {
-        loadState.value =
-            articles.isEmpty ? LoadState.empty : LoadState.success;
+        loadState.value = scores.isEmpty ? LoadState.empty : LoadState.success;
       } else {
-        if ((squareArticles.value.curPage ?? 0) <=
-            (squareArticles.value.pageCount ?? 0)) {
+        if ((scoreRankings.value.curPage ?? 0) <=
+            (scoreRankings.value.pageCount ?? 0)) {
           refreshController.loadComplete();
         } else {
           refreshController.loadNoData();

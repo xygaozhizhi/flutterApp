@@ -10,7 +10,8 @@ void dismissDialog(){
   Get.back();
 }
 class LoadingDialog extends Dialog {
-  const LoadingDialog({super.key});
+  const LoadingDialog({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return CupertinoActivityIndicator();

@@ -67,6 +67,20 @@ class _MainRouteState extends State<MainRoute>
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(controller.title.value)),
+        actions: [
+          Obx(() {
+            return IconButton(
+              onPressed: () {
+                if (controller.title.value != public) {
+                } else {}
+              },
+              icon: Icon(
+                controller.title.value == square.tr ? Icons.add : Icons.search,
+                color: Colors.white,
+              ),
+            );
+          }),
+        ],
       ),
       drawer: Drawer(
         child: _drawMenu(context),
@@ -76,13 +90,11 @@ class _MainRouteState extends State<MainRoute>
         currentIndex: _pageIndex,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          setState(
-            () {
-              _pageIndex = index;
-              _pageController.jumpToPage(_pageIndex);
-              controller.getTitle(_pageIndex);
-            },
-          );
+          setState(() {
+            _pageIndex = index;
+            _pageController.jumpToPage(_pageIndex);
+            controller.getTitle(_pageIndex);
+          });
         },
       ),
       body: PageView(
@@ -114,7 +126,9 @@ class _MainRouteState extends State<MainRoute>
                   right: 8,
                   top: 0,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(RoutesConfig.score);
+                    },
                     icon: const Icon(
                       Icons.vertical_distribute,
                       color: Colors.white,

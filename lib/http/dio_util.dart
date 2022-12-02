@@ -114,7 +114,6 @@ class DioUtil {
       cancelToken: cancelToken,
     ).then((BaseData<T> result) {
       if (result.code == ExceptionHandle.success) {
-        onSuccess?.call(jsonEncode(result.data));
         return Future.value(jsonEncode(result.data));
       } else {
         throw NetException(result.code, result.message);

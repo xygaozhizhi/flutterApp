@@ -10,7 +10,7 @@ class HollowFrameText extends StatelessWidget {
   final String text;
 
   const HollowFrameText({
-    super.key,
+    Key? key,
     this.color = Colors.white,
     this.radius = 0,
     this.slideColor = Colors.black,
@@ -18,7 +18,7 @@ class HollowFrameText extends StatelessWidget {
     this.textColor = Colors.black,
     this.textSize = 14,
     this.text = "",
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,3 +43,4 @@ class HollowFrameText extends StatelessWidget {
     );
   }
 }
+

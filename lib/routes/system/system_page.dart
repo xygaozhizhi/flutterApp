@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myflutterapp/controller/system_controller.dart';
+import 'package:myflutterapp/refresh/pull_to_refresh.dart';
 import 'package:myflutterapp/res/res_string.dart';
 import 'package:myflutterapp/widgets/dialog_utils.dart';
 import 'package:myflutterapp/widgets/empty.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../controller/app_controller.dart';
 import '../../res/app_theme.dart';
@@ -69,7 +71,7 @@ class _SystemState extends State<SystemPage> with TickerProviderStateMixin {
 }
 
 class SystemClassifyPage extends StatefulWidget {
-  const SystemClassifyPage({super.key});
+  const SystemClassifyPage({Key? key}) : super(key: key);
 
   @override
   State<SystemClassifyPage> createState() => _SystemClassifyState();
@@ -83,7 +85,7 @@ class _SystemClassifyState extends State<SystemClassifyPage>
   void initState() {
     super.initState();
     controller = Get.find<SystemController>();
-    controller.getClassify();
+    controller.getClassify(LoadModel.loading);
   }
 
   @override
@@ -96,11 +98,19 @@ class _SystemClassifyState extends State<SystemClassifyPage>
         case LoadState.success:
           return _classifyWidget();
         case LoadState.failure:
-          return const EmptyPage(tipMsg: "网络异常");
-        case LoadState.noMore:
-          return const EmptyPage(tipMsg: "网络异常");
+          return EmptyPage(
+            tipMsg: loadFail.tr,
+            needRefresh: true,
+            onPressed: () {
+              controller.classifyLoadState.value = LoadState.loading;
+              controller.getClassify(LoadModel.loading);
+            },
+          );
         case LoadState.empty:
-          return const EmptyPage(tipMsg: "没有数据");
+          return EmptyPage(
+            tipMsg: noData.tr,
+            needRefresh: false,
+          );
       }
     });
   }
@@ -109,67 +119,75 @@ class _SystemClassifyState extends State<SystemClassifyPage>
   bool get wantKeepAlive => true;
 
   Widget _classifyWidget() {
-    return ListView.builder(
-      itemCount: controller.classify.length,
-      itemBuilder: (context, index) {
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.classify[index].name ?? "",
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
+    return SmartRefresher(
+      controller: controller.classifyRefreshController,
+      onRefresh: _onRefresh,
+      child: ListView.builder(
+        itemCount: controller.classify.length,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            controller.classify[index].name ?? "",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        controller.classify[index].children!.isEmpty
-                            ? const SizedBox()
-                            : Wrap(
-                                spacing: 12,
-                                runSpacing: 8,
-                                children: controller.classify[index].children!
-                                    .map((e) {
-                                  return Text(
-                                    e.name ?? "",
-                                    style: const TextStyle(
-                                      color: Colors.black54,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                      ],
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          controller.classify[index].children!.isEmpty
+                              ? const SizedBox()
+                              : Wrap(
+                                  spacing: 12,
+                                  runSpacing: 8,
+                                  children: controller.classify[index].children!
+                                      .map((e) {
+                                    return Text(
+                                      e.name ?? "",
+                                      style: const TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const Icon(
-                    Icons.chevron_right,
-                    color: Colors.black87,
-                  ),
-                ],
+                    const Icon(
+                      Icons.chevron_right,
+                      color: Colors.black87,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Divider(
-              color: Colors.black54,
-            ),
-          ],
-        );
-      },
+              const Divider(
+                color: Colors.black54,
+              ),
+            ],
+          );
+        },
+      ),
     );
+  }
+
+  void _onRefresh() {
+    controller.getClassify(LoadModel.refresh);
   }
 }
 
 class SystemNavigationPage extends StatefulWidget {
-  const SystemNavigationPage({super.key});
+  const SystemNavigationPage({Key? key}) : super(key: key);
 
   @override
   State<SystemNavigationPage> createState() => _SystemNavigationState();
@@ -178,6 +196,9 @@ class SystemNavigationPage extends StatefulWidget {
 class _SystemNavigationState extends State<SystemNavigationPage>
     with AutomaticKeepAliveClientMixin {
   late SystemController controller;
+  final ItemScrollController rightItemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   @override
   void initState() {
@@ -196,11 +217,23 @@ class _SystemNavigationState extends State<SystemNavigationPage>
         case LoadState.success:
           return _navigationWidget();
         case LoadState.failure:
-          return const EmptyPage(tipMsg: "网络异常");
-        case LoadState.noMore:
-          return const EmptyPage(tipMsg: "网络异常");
+          return EmptyPage(
+            tipMsg: loadFail.tr,
+            needRefresh: true,
+            onPressed: () {
+              controller.navigationLoadState.value = LoadState.loading;
+              controller.getNavigation();
+            },
+          );
         case LoadState.empty:
-          return const EmptyPage(tipMsg: "没有数据");
+          return EmptyPage(
+            tipMsg: noData.tr,
+            needRefresh: true,
+            onPressed: () {
+              controller.navigationLoadState.value = LoadState.loading;
+              controller.getNavigation();
+            },
+          );
       }
     });
   }
@@ -213,27 +246,55 @@ class _SystemNavigationState extends State<SystemNavigationPage>
       children: [
         Expanded(
           flex: 2,
-          child: ListView.builder(
+          child: ListView.separated(
             itemCount: controller.navigation.length,
             itemBuilder: (context, index) {
-              return GestureDetector(
-                child: Container(
-                  padding: const EdgeInsets.all(24),
-                  color: Colors.black12,
-                  child: Text(controller.navigation[index].name ?? ""),
-                ),
-                onTap: () {},
+              return Obx(() {
+                return GestureDetector(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    color: controller.selectIndex.value == index
+                        ? Colors.white70
+                        : Colors.black12,
+                    child: Text(
+                      controller.navigation[index].name ?? "",
+                      style: TextStyle(
+                        color: controller.selectIndex.value == index
+                            ? getThemeData(appController.theme.value)
+                                .primaryColor
+                            : Colors.black,
+                      ),
+                    ),
+                  ),
+                  onTap: () async {
+                    controller.selectIndex.value = index;
+                    rightItemScrollController.scrollTo(
+                      index: index,
+                      duration: const Duration(milliseconds: 300),
+                    );
+                    //print(itemPositionsListener.itemPositions.value.length);
+                  },
+                );
+              });
+            },
+            separatorBuilder: (context, index) {
+              return const Divider(
+                color: Colors.white,
+                height: 1,
               );
             },
           ),
         ),
         Expanded(
           flex: 5,
-          child: ListView.builder(
+          child: ScrollablePositionedList.builder(
+            itemScrollController: rightItemScrollController,
+            itemPositionsListener: itemPositionsListener,
             itemCount: controller.navigation.length,
             itemBuilder: (context, index) {
               return Container(
-                padding: const EdgeInsets.all(12),
+                key: controller.globalKeys[index],
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -279,5 +340,10 @@ class _SystemNavigationState extends State<SystemNavigationPage>
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

@@ -35,6 +35,10 @@ class Constant {
     return "project/list/$page/json?cid=$cid";
   }
 
+  static String scoreRanking(int page) {
+    return "coin/rank/$page/json";
+  }
+
   ///图片数据常量
   static const String icLauncher = "images/ic_launcher.png";
   static const String icDefaultAvatar = "images/ic_default_avatar.png";

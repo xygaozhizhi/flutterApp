@@ -36,9 +36,14 @@ const String customize = "customize";
 const String cancel = "cancel";
 const String sure = "sure";
 const String navigation = "navigation";
+const String score="score";
+const String scoreRanking="scoreRanking";
 //
 const String top = "top";
 const String newArticles = "new";
+//
+const String loadFail = "load_fail";
+const String noData = "no_data";
 
 class Messages extends Translations {
   @override
@@ -77,9 +82,14 @@ class Messages extends Translations {
           cancel: "取消",
           sure: "确定",
           navigation: "导航",
+          score:"积分",
+          scoreRanking:"积分排行榜",
           //
           top: "置顶",
           newArticles: "新",
+          //
+          loadFail: "加载失败",
+          noData: "没有数据",
         },
         us: {
           home: "Home",
@@ -118,9 +128,14 @@ class Messages extends Translations {
           cancel: "Cancel",
           sure: "Sure",
           navigation: "Navigation",
+          score:"Score",
+          scoreRanking:"Score Ranking",
           //
           top: "Top",
           newArticles: "New",
+          //
+          loadFail: "Load Fail",
+          noData: "No Data",
         },
       };
 }

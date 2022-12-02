@@ -9,8 +9,8 @@ import 'package:myflutterapp/controller/app_controller.dart';
 import 'package:myflutterapp/res/res_string.dart';
 import 'dart:ui' as ui;
 import 'package:myflutterapp/res/app_theme.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'http/dio_util.dart';
+import 'refresh/pull_to_refresh.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
       headerBuilder: () => const WaterDropHeader(),
       footerBuilder: () => const ClassicFooter(),
       hideFooterWhenNotFull: false,
-      child: GetMaterialApp(
+      c: GetMaterialApp(
+        localizationsDelegates: const [
+          RefreshLocalizations.delegate,
+        ],
         theme: getThemeData(appController.theme.value),
         translations: Messages(),
         locale: ui.window.locale,
