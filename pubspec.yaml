@@ -41,7 +41,7 @@ dependencies:
   cookie_jar: ^3.0.1
   path_provider: ^2.0.11
   dio_cache_interceptor: ^3.2.7
-  fluttertoast: ^8.0.9
+  fluttertoast: ^8.1.1
   cached_network_image: ^3.2.2
   scrollable_positioned_list: ^0.3.5
   webview_flutter: ^3.0.4

@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     controller = Get.find<HomeController>();
+    mainController = Get.find<MainController>();
     swiperController = SwiperController();
     controller.getData(LoadModel.loading);
   }
@@ -241,9 +242,20 @@ class _HomePageState extends State<HomePage> {
                     const Spacer(
                       flex: 1,
                     ),
-                    const Icon(
-                      Icons.favorite_outline,
-                      color: Colors.black54,
+                    GestureDetector(
+                      child: Icon(
+                        Icons.favorite,
+                        color: controller.articles[index].collect
+                            ? Colors.redAccent
+                            : Colors.black54,
+                      ),
+                      onTap: () async {
+                        await mainController
+                            .collectArticle(controller.articles[index].id)
+                            .then((value) {
+                          controller.articles[index].collect = true;
+                        });
+                      },
                     ),
                   ],
                 ),

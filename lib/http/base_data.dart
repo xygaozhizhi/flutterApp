@@ -1,8 +1,8 @@
 import '../common/constant.dart';
 
 class BaseData<T> {
-  int code=1001;
-  String message='';
+  int code = -1;
+  String message = '';
   T? data;
 
   BaseData(this.code, this.message, this.data);

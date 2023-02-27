@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 
 class ExceptionHandle {
   static const int success = 0;
+  static const int needLoginError = -1001;
+
   static const int successNotContent = 204;
   static const int notModified = 304;
   static const int unauthorized = 401;
@@ -18,6 +20,7 @@ class ExceptionHandle {
   static const int receiveTimeoutError = 1006;
   static const int cancelError = 1007;
   static const int unknownError = 9999;
+
 
   static final Map<int, NetException> _errorMap = <int, NetException>{
     netError: NetException(netError, '网络异常，请检查你的网络！'),

@@ -17,6 +17,7 @@ const String myShare = "my_share";
 const String myTodo = "my_todo";
 const String nightMode = "night_mode";
 const String systemSettings = "system_settings";
+const String logout = "logout";
 const String settings = "settings";
 const String basicSettings = "basic_settings";
 const String noImageMode = "no_image_mode";
@@ -36,8 +37,22 @@ const String customize = "customize";
 const String cancel = "cancel";
 const String sure = "sure";
 const String navigation = "navigation";
-const String score="score";
-const String scoreRanking="scoreRanking";
+const String score = "score";
+const String scoreRanking = "scoreRanking";
+const String login = "login";
+const String userLogin = "userLogin";
+const String loginTip = "loginTip";
+const String userName = "userName";
+const String password = "password";
+const String noAccentToRegister = "noAccentToRegister";
+const String register = "register";
+const String registerUser = "registerUser";
+const String registerTip = "registerTip";
+const String inputPasswordAgain = "inputPasswordAgain";
+const String hasAccentToLogin = "hasAccentToLogin";
+const String userNameNotEmpty = "userNameNotEmpty";
+const String passwordNotEmpty = "passwordNotEmpty";
+const String registerSuccessAndToLogin = "registerSuccessAndToLogin";
 //
 const String top = "top";
 const String newArticles = "new";
@@ -64,6 +79,7 @@ class Messages extends Translations {
           nightMode: "夜间模式",
           systemSettings: "系统设置",
           settings: "设置",
+          logout: "退出登录",
           basicSettings: "基本设置",
           noImageMode: "无图模式",
           noImageModeDesc: "开启后在非Wifi环境下不加载图片",
@@ -82,8 +98,22 @@ class Messages extends Translations {
           cancel: "取消",
           sure: "确定",
           navigation: "导航",
-          score:"积分",
-          scoreRanking:"积分排行榜",
+          score: "积分",
+          scoreRanking: "积分排行榜",
+          login: "登录",
+          userLogin: "用户登录",
+          loginTip: "请使用WanAndroid账号登录!",
+          userName: "用户名",
+          password: "密码",
+          noAccentToRegister: "没有账号？去注册",
+          register: "注册",
+          registerUser: "注册用户",
+          registerTip: "用户注册后才可以登录",
+          inputPasswordAgain: "再输入一次密码",
+          hasAccentToLogin: "已有帐户？去登录",
+          userNameNotEmpty: "用户名不能为空",
+          passwordNotEmpty: "密码不能为空",
+          registerSuccessAndToLogin: "注册成功请登录",
           //
           top: "置顶",
           newArticles: "新",
@@ -107,6 +137,7 @@ class Messages extends Translations {
           nightMode: "Night mode",
           systemSettings: "System settings",
           settings: "Settings",
+          logout: "Logout",
           basicSettings: "Basic settings",
           noImageMode: "No image mode",
           noImageModeDesc:
@@ -128,8 +159,22 @@ class Messages extends Translations {
           cancel: "Cancel",
           sure: "Sure",
           navigation: "Navigation",
-          score:"Score",
-          scoreRanking:"Score Ranking",
+          score: "Score",
+          scoreRanking: "Score Ranking",
+          login: "Login",
+          userLogin: "User Login",
+          loginTip: "Please Use WanAndroid Accent To Login",
+          userName: "User Name",
+          password: "Password",
+          noAccentToRegister: "No Accent And To Register",
+          register: "Register",
+          registerUser: "Register User",
+          registerTip: "Register And Then To Login",
+          inputPasswordAgain: "Input Password Again",
+          hasAccentToLogin: "Has Accent And To Login",
+          userNameNotEmpty: "User Name Can Not Empty",
+          passwordNotEmpty: "Password Can Not Empty",
+          registerSuccessAndToLogin: "Register Success And To Login",
           //
           top: "Top",
           newArticles: "New",

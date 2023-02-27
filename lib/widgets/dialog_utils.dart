@@ -2,21 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+void showLoadingDialog() {
+  Get.dialog(const LoadingDialog());
+}
 
-void showLoadingDialog(){
-  Get.dialog(const CupertinoAlertDialog());
+void dismissDialog() {
+  if (Get.isDialogOpen ?? false) {
+    Get.back();
+  }
 }
-void dismissDialog(){
-  Get.back();
-}
+
 class LoadingDialog extends Dialog {
   const LoadingDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoActivityIndicator();
-  }
-  static void show() {
-    Get.dialog(LoadingDialog());
+    return const CupertinoActivityIndicator(
+      color: Colors.black87,
+      radius: 16,
+    );
   }
 }

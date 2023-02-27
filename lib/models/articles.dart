@@ -63,14 +63,14 @@ class Articles {
     this.canEdit,
     this.chapterId,
     this.chapterName,
-    this.collect,
+    this.collect = false,
     this.courseId,
     this.desc,
     this.descMd,
     this.envelopePic,
     this.fresh = false,
     this.host,
-    this.id,
+    this.id = -1,
     this.isAdminAdd,
     this.link,
     this.niceDate,
@@ -100,14 +100,14 @@ class Articles {
   bool? canEdit;
   int? chapterId;
   String? chapterName;
-  bool? collect;
+  bool collect;
   int? courseId;
   String? desc;
   String? descMd;
   String? envelopePic;
   bool fresh;
   String? host;
-  int? id;
+  int id;
   bool? isAdminAdd;
   String? link;
   String? niceDate;

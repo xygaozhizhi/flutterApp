@@ -34,6 +34,10 @@ ThemeData lightTheme(int key) {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: themeColorData[key],
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      iconColor: themeColorData[key],
+      labelStyle: TextStyle(color: themeColorData[key]),
+    ),
   );
 }
 

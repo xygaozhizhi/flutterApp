@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:myflutterapp/controller/square_controller.dart';
 import 'package:myflutterapp/controller/system_controller.dart';
+import 'package:myflutterapp/routes/login/login_page.dart';
+import 'package:myflutterapp/routes/login/register_page.dart';
 import 'package:myflutterapp/routes/main_route.dart';
 import 'package:myflutterapp/routes/mine/score_ranking.dart';
 import 'package:myflutterapp/routes/mine/system_setting.dart';
@@ -9,6 +11,7 @@ import 'package:myflutterapp/routes/webview_page.dart';
 
 import '../controller/app_controller.dart';
 import '../controller/home_controller.dart';
+import '../controller/login_controller.dart';
 import '../controller/main_controller.dart';
 import '../controller/project_controller.dart';
 import '../controller/public_controller.dart';
@@ -21,6 +24,8 @@ abstract class RoutesConfig {
   static const setting = "/setting";
   static const webview = "/webview";
   static const score = "/score";
+  static const login = "/login";
+  static const register = "/register";
 
   static final List<GetPage> getPages = [
     GetPage(
@@ -60,6 +65,20 @@ abstract class RoutesConfig {
       page: () => const SettingRoute(),
       binding: BindingsBuilder(() {
         Get.put<SystemSettingController>(SystemSettingController());
+      }),
+    ),
+    GetPage(
+      name: login,
+      page: () => const LoginPage(),
+      binding: BindingsBuilder(() {
+        Get.put<LoginController>(LoginController());
+      }),
+    ),
+    GetPage(
+      name: register,
+      page: () => const RegisterPage(),
+      binding: BindingsBuilder(() {
+        Get.put<LoginController>(LoginController());
       }),
     ),
   ];
